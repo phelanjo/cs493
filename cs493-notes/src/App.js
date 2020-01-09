@@ -4,8 +4,9 @@ import firebase from './config/firebaseConfig'
 function App() {
   window.onload = () => {
     let googleLogin = document.getElementById('googleLogin');
-
+    let signIn = document.getElementById('login')
     let signOut = document.getElementById('signOut')
+    
 
     googleLogin.addEventListener('click', () => {
       var googleProvider = new firebase.auth.GoogleAuthProvider()
@@ -18,7 +19,20 @@ function App() {
       })
     })
 
-    signOut.addEventListener('click', (e) => {
+    signIn.addEventListener('click', () => {
+      let email = document.getElementById('email').value
+      let password = document.getElementById('password').value
+
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then(user => {
+          console.log(user)
+        })
+        .catch(err => {
+          console.log(err)
+        })
+    }, false)
+
+    signOut.addEventListener('click', () => {
       firebase.auth().signOut()
         .then(() => {
           console.log('user signed out successfully')
@@ -31,13 +45,23 @@ function App() {
 
   return (
     <div className="container center App">
-        <div>
-          <button className="btn red" id="googleLogin">Google Sign In</button>
-        </div>
-        <br />
-        <div>
-          <button className="btn red" id="signOut">Sign Out</button>
-        </div>
+      <div>
+        <form id="signIn">
+          <label htmlFor="email">Email</label>
+          <input type="email" id="email"/>
+          <label htmlFor="password">Password</label>
+          <input type="password" id="password"/>
+        </form>
+        <button className="btn blue" id="login">Sign In</button>
+      </div>
+      <br />
+      <div>
+        <button className="btn red" id="googleLogin">Google Sign In</button>
+      </div>
+      <br />
+      <div>
+        <button className="btn red" id="signOut">Sign Out</button>
+      </div>
     </div>
   );
 }
