@@ -60,15 +60,15 @@ class SignIn extends Component {
             <input type="password" id="password" onChange={this.handleChange} />
           </div>
           <div className="input-field">
-            <button className="btn blue left" onClick={this.signIn}>Sign In</button>
+            <button className="btn teal darken-1 left" onClick={this.signIn}>Sign In</button>
           </div>
           <div>
-            <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
+            <button className="btn teal darken-1 right" onClick={this.signUp}>Sign Up</button>
           </div>
           <br/><br/><br/>
           <div className="center">
             <div>
-              <button className="btn red" onClick={this.googleLogin}>Google Sign In</button>
+              <button className="btn teal darken-1" onClick={this.googleLogin}>Google Sign In</button>
             </div>
           </div>
         </form>
