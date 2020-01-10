@@ -23,7 +23,6 @@ class SignIn extends Component {
         user: result.user,
         email: result.user.email
       })
-      console.log(this.state.user.email)
     }).catch((err) => {
       console.log(err)
     })
