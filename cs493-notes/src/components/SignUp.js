@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import firebase from '../config/firebaseConfig'
 
 class SignUp extends Component {
   state = {
     signUpEmail: '',
-    signUpPassword: ''
+    signUpPassword: '',
+    user: null
   }
 
   handleChange = (e) => {
@@ -26,7 +28,9 @@ class SignUp extends Component {
     this.clearForm()
     firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword)
     .then(user => {
-      console.log(user)
+      this.setState({
+        user
+      })
     })
     .catch(err => {
       console.log(err)
@@ -34,6 +38,8 @@ class SignUp extends Component {
   }
 
   render() {
+    if (this.state.user) return <Redirect to='/' />
+
     return (
       <div className="container">
         <form id="signUp" onSubmit={this.signUp}>
@@ -46,7 +52,7 @@ class SignUp extends Component {
             <input type="password" id="signUpPassword" onChange={this.handleChange} />
           </div>
           <div className="input-field">
-            <button className="btn green" id="signUpButton">Sign Up</button>
+            <button className="btn green right" id="signUpButton">Sign Up</button>
           </div>
         </form>
       </div>
