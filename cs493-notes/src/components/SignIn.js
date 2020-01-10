@@ -31,7 +31,7 @@ class SignIn extends Component {
   }
 
   signUp = () => {
-    return <Redirect to='/signup' />
+    this.props.history.push('/signup')
   }
 
   render() {
@@ -53,7 +53,7 @@ class SignIn extends Component {
             </div>
           </form>
           <div>
-              <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
+            <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
           </div>
         </div>
         <br/><br/><br/>
