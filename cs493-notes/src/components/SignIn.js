@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import firebase from '../config/firebaseConfig'
+import { Redirect } from 'react-router-dom'
 
 import GoogleLoginButton from './GoogleLoginButton'
 
 class SignIn extends Component {
   state = {
     email: '',
-    password: ''
+    password: '',
+    user: null
   }
 
   handleChange = (e) => {
@@ -15,12 +17,13 @@ class SignIn extends Component {
     })
   }
 
-  signIn = () => {
-    console.log(this.state.email)
-    console.log(this.state.password)
+  signIn = (e) => {
+    e.preventDefault()
     firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
-        console.log(user)
+        this.setState({
+          user
+        })
       })
       .catch(err => {
         console.log(err)
@@ -28,10 +31,11 @@ class SignIn extends Component {
   }
 
   signUp = () => {
-    console.log('go to sign up screen from this button')
+    return <Redirect to='/signup' />
   }
 
   render() {
+    if (this.state.user) return <Redirect to='/' />
     return (
       <div className="container">
         <div>
@@ -47,10 +51,10 @@ class SignIn extends Component {
             <div className="input-field">
               <button className="btn blue left" onClick={this.signIn}>Sign In</button>
             </div>
-            <div className="input-field">
-              <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
-            </div>
           </form>
+          <div>
+              <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
+          </div>
         </div>
         <br/><br/><br/>
         <div className="center">

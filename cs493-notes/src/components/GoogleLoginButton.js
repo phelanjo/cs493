@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
+import { Redirect } from 'react-router-dom'
 import firebase from '../config/firebaseConfig'
 
 class GoogleLoginButton extends Component {
   state = {
-    user: {}
+    user: null
   }
 
   googleLogin = () => {
@@ -21,6 +22,8 @@ class GoogleLoginButton extends Component {
 
 
   render() {
+    if (this.state.user) return <Redirect to='/' />
+    
     return (
       <div>
         <button className="btn red" onClick={this.googleLogin}>Google Sign In</button>
