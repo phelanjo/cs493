@@ -1,23 +1,13 @@
 import React from 'react';
 import firebase from './config/firebaseConfig'
 
+import GoogleLoginButton from './components/GoogleLoginButton'
+
 function App() {
   window.onload = () => {
-    let googleLogin = document.getElementById('googleLogin');
     let signIn = document.getElementById('login')
     let signOut = document.getElementById('signOut')
     let signup = document.getElementById('signup')
-
-    googleLogin.addEventListener('click', () => {
-      var googleProvider = new firebase.auth.GoogleAuthProvider()
-  
-      firebase.auth().signInWithPopup(googleProvider).then((result) => {
-        var user = result.user;
-        console.log(user)
-      }).catch((err) => {
-        console.log(err)
-      })
-    })
 
     signIn.addEventListener('click', () => {
       let email = document.getElementById('email').value
@@ -71,11 +61,7 @@ function App() {
 
       <br />
 
-      <div>
-        <button className="btn red" id="googleLogin">Google Sign In</button>
-      </div>
-
-      <br />
+      <GoogleLoginButton />
 
       <div>
         <button className="btn red" id="signOut">Sign Out</button>
