@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom'
 
-import SignOutButton from './components/SignOutButton'
+import Dashboard from './components/Dashboard'
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 
@@ -10,8 +10,9 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Switch>
-          <Route exact path='/' component={SignIn} />
-          <Route path='signup' component={SignUp} />
+          <Route exact path='/' component={Dashboard} />
+          <Route path='/signin' component={SignIn} />
+          <Route path='/signup' component={SignUp} />
         </Switch>
       </div>
     </BrowserRouter>
