@@ -2,11 +2,11 @@ import React from 'react';
 import firebase from './config/firebaseConfig'
 
 import GoogleLoginButton from './components/GoogleLoginButton'
+import SignOutButton from './components/SignOutButton'
 
 function App() {
   window.onload = () => {
     let signIn = document.getElementById('login')
-    let signOut = document.getElementById('signOut')
     let signup = document.getElementById('signup')
 
     signIn.addEventListener('click', () => {
@@ -16,16 +16,6 @@ function App() {
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then(user => {
           console.log(user)
-        })
-        .catch(err => {
-          console.log(err)
-        })
-    }, false)
-
-    signOut.addEventListener('click', () => {
-      firebase.auth().signOut()
-        .then(() => {
-          console.log('user signed out successfully')
         })
         .catch(err => {
           console.log(err)
@@ -63,9 +53,9 @@ function App() {
 
       <GoogleLoginButton />
 
-      <div>
-        <button className="btn red" id="signOut">Sign Out</button>
-      </div>
+      <br />
+
+      <SignOutButton />
 
       <br /> <br />
 
