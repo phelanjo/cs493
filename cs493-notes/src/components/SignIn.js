@@ -33,23 +33,29 @@ class SignIn extends Component {
 
   render() {
     return (
-      <div>
-        <form id="signIn">
-          <div className="input-field">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <label htmlFor="password">Password</label>
-            <input type="password" id="password" onChange={this.handleChange} />
-          </div>
-          <div className="input-field">
-            <button className="btn blue left" onClick={this.signIn}>Sign In</button>
-          </div>
-          <div className="input-field">
-            <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
-          </div>
-        </form>
+      <div className="container">
+        <div>
+          <form id="signIn">
+            <div className="input-field">
+              <label htmlFor="email">Email</label>
+              <input type="email" id="email" onChange={this.handleChange} />
+            </div>
+            <div className="input-field">
+              <label htmlFor="password">Password</label>
+              <input type="password" id="password" onChange={this.handleChange} />
+            </div>
+            <div className="input-field">
+              <button className="btn blue left" onClick={this.signIn}>Sign In</button>
+            </div>
+            <div className="input-field">
+              <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
+            </div>
+          </form>
+        </div>
+        <br/><br/><br/>
+        <div className="center">
+          <GoogleLoginButton />
+        </div>
       </div>
     )
   }
