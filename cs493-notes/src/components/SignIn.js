@@ -2,8 +2,6 @@ import React, { Component } from 'react'
 import firebase from '../config/firebaseConfig'
 import { Redirect } from 'react-router-dom'
 
-import GoogleLoginButton from './GoogleLoginButton'
-
 class SignIn extends Component {
   state = {
     email: '',
@@ -14,6 +12,20 @@ class SignIn extends Component {
   handleChange = (e) => {
     this.setState({
       [e.target.id]: e.target.value
+    })
+  }
+
+  googleLogin = () => {
+    var googleProvider = new firebase.auth.GoogleAuthProvider()
+
+    firebase.auth().signInWithPopup(googleProvider).then((result) => {
+      this.setState({
+        user: result.user,
+        email: result.user.email
+      })
+      console.log(this.state.user.email)
+    }).catch((err) => {
+      console.log(err)
     })
   }
 
@@ -35,7 +47,7 @@ class SignIn extends Component {
   }
 
   render() {
-    if (this.state.user) return <Redirect to='/' />
+    if (this.state.user) return <Redirect to={{pathname: '/', state: { email: this.state.email }}} />
     return (
       <div className="container">
         <div>
@@ -58,7 +70,9 @@ class SignIn extends Component {
         </div>
         <br/><br/><br/>
         <div className="center">
-          <GoogleLoginButton />
+          <div>
+            <button className="btn red" onClick={this.googleLogin}>Google Sign In</button>
+          </div>
         </div>
       </div>
     )
