@@ -15,17 +15,8 @@ class SignUp extends Component {
     })
   }
 
-  clearForm = () => {
-    document.getElementById('signUp').reset()
-    this.setState({
-      signUpEmail: '',
-      signUpPassword: ''
-    })
-  }
-
   signUp = (e) => {
     e.preventDefault()
-    this.clearForm()
     firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword)
     .then(user => {
       this.setState({
@@ -38,7 +29,7 @@ class SignUp extends Component {
   }
 
   render() {
-    if (this.state.user) return <Redirect to='/' />
+    if (this.state.user) return <Redirect to={{pathname: '/', state: { email: this.state.signUpEmail }}} />
 
     return (
       <div className="container">
