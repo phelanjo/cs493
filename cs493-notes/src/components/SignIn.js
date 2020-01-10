@@ -46,7 +46,7 @@ class SignIn extends Component {
   }
 
   render() {
-    if (this.state.user) return <Redirect to={{pathname: '/', state: { email: this.state.email }}} />
+    if (this.state.user) return <Redirect to={{pathname: '/dashboard', state: { email: this.state.email }}} />
     return (
       <div className="container">
         <div>

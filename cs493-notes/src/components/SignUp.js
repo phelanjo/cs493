@@ -29,7 +29,7 @@ class SignUp extends Component {
   }
 
   render() {
-    if (this.state.user) return <Redirect to={{pathname: '/', state: { email: this.state.signUpEmail }}} />
+    if (this.state.user) return <Redirect to={{pathname: '/dashboard', state: { email: this.state.signUpEmail }}} />
 
     return (
       <div className="container">

@@ -7,7 +7,7 @@ class SignOutButton extends Component {
   logout = () => {
     firebase.auth().signOut()
       .then(() => {
-        this.props.history.push('/signin')
+        this.props.history.push('/')
       })
       .catch(err => {
         console.log(err)
