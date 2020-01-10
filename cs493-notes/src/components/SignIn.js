@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
-import firebase from 'firebase/app'
+import firebase from '../config/firebaseConfig'
+
+import GoogleLoginButton from './GoogleLoginButton'
 
 class SignIn extends Component {
   state = {
@@ -41,9 +43,13 @@ class SignIn extends Component {
             <label htmlFor="password">Password</label>
             <input type="password" id="password" onChange={this.handleChange} />
           </div>
+          <div className="input-field">
+            <button className="btn blue left" onClick={this.signIn}>Sign In</button>
+          </div>
+          <div className="input-field">
+            <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
+          </div>
         </form>
-        <button className="btn blue left" onClick={this.signIn}>Sign In</button>
-        <button className="btn blue right" onClick={this.signUp}>Sign Up</button>
       </div>
     )
   }

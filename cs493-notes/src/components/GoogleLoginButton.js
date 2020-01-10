@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import firebase from 'firebase/app'
+import React, { Component } from 'react'
+import firebase from '../config/firebaseConfig'
 
 class GoogleLoginButton extends Component {
   state = {
