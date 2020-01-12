@@ -5,6 +5,19 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #333;
+}
+
+form {
+  padding: 20px;
+  margin-top: 60px;
+  background: #eee;
+}
+
+#dash {
+  padding: 20px;
+  margin-top: 60px;
+  background: #eee;
 }
 
 code {
