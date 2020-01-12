@@ -12,7 +12,7 @@ class Crud extends Component {
   }
 
   componentDidMount() {
-    this.readNote()
+    this.readNotes()
   }
   
   createNote = () => {
@@ -39,7 +39,7 @@ class Crud extends Component {
     })
   }
 
-  readNote = () => {
+  readNotes = () => {
     db.ref('notes/').on('value', snapshot => {
       this.setState({
         notes: snapshot.val(),
