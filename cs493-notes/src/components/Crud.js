@@ -16,7 +16,7 @@ class Crud extends Component {
   }
   
   createNote = () => {
-    const titles = ['Title 1', 'Title 2', 'Title 3']
+    const titles = ['Title 1', 'Title 2', 'Title 3', 'Title 4', 'Title 5']
     const contents = ['Red Snake', 'Blue Fish', 'Yellow Monkey', 'Green Iguana', 'Black Cat']
 
     db.ref('notes/').push({
@@ -27,6 +27,16 @@ class Crud extends Component {
 
   deleteNote = note => {
     db.ref(`notes/${note}`).remove()
+  }
+
+  updateNote = note => {
+    const titles = ['Title 1', 'Title 2', 'Title 3', 'Title 4', 'Title 5']
+    const contents = ['Red Snake', 'Blue Fish', 'Yellow Monkey', 'Green Iguana', 'Black Cat']
+
+    db.ref(`notes/${note}`).update({
+      title: titles[Math.floor(Math.random() * titles.length)],
+      content: contents[Math.floor(Math.random() * contents.length)]
+    })
   }
 
   readNote = () => {
@@ -53,7 +63,7 @@ class Crud extends Component {
                     <span className="card-title">{ JSON.stringify(notes[note].title) }</span>
                     <p>{ JSON.stringify(notes[note].content)}</p>
                     <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(note)}>Delete</button>
-                    <button className="btn teal darken-1" id="update">Update</button>
+                    <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(note)}>Update</button>
                   </div>
                 </div>
               )
