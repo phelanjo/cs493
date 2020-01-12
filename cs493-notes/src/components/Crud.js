@@ -26,7 +26,7 @@ class Crud extends Component {
   }
 
   deleteNote = note => {
-    db.ref('notes/').remove()
+    db.ref(`notes/${note}`).remove()
   }
 
   readNote = () => {
@@ -40,7 +40,9 @@ class Crud extends Component {
 
   renderList = () => {
     const { notes } = this.state
-    return (
+
+   return(
+    notes ? 
       <div className="center">
         <button className="btn teal darken-1" id="create" onClick={this.createNote}>Create</button>
           {
@@ -50,7 +52,7 @@ class Crud extends Component {
                   <div className="card-content">
                     <span className="card-title">{ JSON.stringify(notes[note].title) }</span>
                     <p>{ JSON.stringify(notes[note].content)}</p>
-                    <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(key)}>Delete</button>
+                    <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(note)}>Delete</button>
                     <button className="btn teal darken-1" id="update">Update</button>
                   </div>
                 </div>
@@ -58,7 +60,12 @@ class Crud extends Component {
             })
           }
       </div>
-    )
+    :
+      <div className="center">
+        <button className="btn teal darken-1" id="create" onClick={this.createNote}>Create</button>
+        <h1 className="white-text">Add some notes</h1>
+      </div>
+   )
   }
 
   render() {
