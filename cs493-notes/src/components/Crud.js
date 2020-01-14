@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
-import firebase, { db } from '../config/firebaseConfig'
+import { db } from '../config/firebaseConfig'
+import { withRouter } from 'react-router-dom'
 
 class Crud extends Component {
   constructor(props){
@@ -48,6 +49,11 @@ class Crud extends Component {
     })
   }
 
+  sendToNoteDetails = note => {
+    const state = this.state
+    this.props.history.push(`notes/${note}`, state)
+  }
+
   renderList = () => {
     const { notes } = this.state
 
@@ -56,16 +62,17 @@ class Crud extends Component {
       <div className="center">
         <button className="btn teal darken-1" id="create" onClick={this.createNote}>Create</button>
           {
-            Object.keys(notes).map((note, key) => {
+            Object.keys(notes).map((noteId, key) => {
               return (
                 <div key={key} className="card z-depth-0">
-                  <div className="card-content">
-                    <span className="card-title">{ JSON.stringify(notes[note].title) }</span>
-                    <p>{ JSON.stringify(notes[note].content)}</p>
-                    <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(note)}>Delete</button>
-                    <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(note)}>Update</button>
+                  <div onClick={() => this.sendToNoteDetails(noteId)} className="card-content">
+                    <span className="card-title">{ JSON.stringify(notes[noteId].title) }</span>
+                    <p>{ JSON.stringify(notes[noteId].content)}</p>
                   </div>
+                  <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(noteId)}>Delete</button>
+                  <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(noteId)}>Update</button>
                 </div>
+
               )
             })
           }
@@ -89,4 +96,4 @@ class Crud extends Component {
   }
 }
 
-export default Crud
+export default withRouter(Crud)
