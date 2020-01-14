@@ -7,6 +7,7 @@ import Crud from './components/Crud'
 
 import SignIn from './auth/SignIn'
 import SignUp from './auth/SignUp'
+import NoteDetails from './components/NoteDetails';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/crud' component={Crud} />
           <Route path='/dashboard' component={Dashboard} />
           <Route path='/signup' component={SignUp} />
+          <Route path='/notes/:noteId' component={NoteDetails} />
         </Switch>
       </div>
     </BrowserRouter>
