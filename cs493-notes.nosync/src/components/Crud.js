@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { db } from '../config/firebaseConfig'
+import firebase, { db } from '../config/firebaseConfig'
 import { withRouter } from 'react-router-dom'
 
 class Crud extends Component {
@@ -8,7 +8,8 @@ class Crud extends Component {
   
     this.state = {
       loaded: false,
-      notes: {}
+      notes: {},
+      image: null
     }
   }
 
@@ -22,7 +23,8 @@ class Crud extends Component {
 
     db.ref('notes/').push({
       title: titles[Math.floor(Math.random() * titles.length)],
-      content: contents[Math.floor(Math.random() * contents.length)]
+      content: contents[Math.floor(Math.random() * contents.length)],
+      image_url: ''
     })
   }
 
@@ -54,6 +56,33 @@ class Crud extends Component {
     this.props.history.push(`notes/${note}`, state)
   }
 
+
+  handleChange = e => {
+    const image = e.target.files[0]
+    this.setState(() => ({
+      image
+    }))
+  }
+
+  handleUpload = note => {
+    const { image } = this.state
+    let rootRef = firebase.storage().ref()
+    let fileRef = rootRef.child(`images/${note}/${image.name}`)
+
+    fileRef.put(image)
+      .then(() => {
+        fileRef.getDownloadURL()
+        .then(url => {
+          db.ref(`notes/${note}`).update({
+            image_url: url
+          })
+        })
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   renderList = () => {
     const { notes } = this.state
 
@@ -71,6 +100,28 @@ class Crud extends Component {
                   </div>
                   <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(noteId)}>Delete</button>
                   <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(noteId)}>Update</button>
+                  {
+                    notes[noteId].image_url === "" ?
+                    <div>
+                      <form className="white">
+                          <div className="file-field input-field white">
+                            <div className="btn">
+                              <span>File</span>
+                              <input type="file" onChange={this.handleChange} />
+                            </div>
+                            <div className="file-path-wrapper white">
+                              <input className="file-path validate" type="text" />
+                            </div>
+                          </div>
+                      </form>
+                      <button className="btn teal darken-1" id="upload" onClick={() => this.handleUpload(noteId)}>Upload</button>
+                      </div>
+                    :
+                      null
+                  }
+                  <div>
+                    <img alt="" src={notes[noteId].image_url}/>
+                  </div>
                 </div>
 
               )
