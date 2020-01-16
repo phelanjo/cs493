@@ -24,11 +24,15 @@ class Crud extends Component {
     db.ref('notes/').push({
       title: titles[Math.floor(Math.random() * titles.length)],
       content: contents[Math.floor(Math.random() * contents.length)],
-      image_url: ''
+      image_url: '',
+      image_name: ''
     })
   }
 
-  deleteNote = note => {
+  deleteNote = (note, image_name) => {
+    let rootRef = firebase.storage().ref()
+    let imageRef = rootRef.child(`images/${note}/${image_name}`)
+    imageRef.delete()
     db.ref(`notes/${note}`).remove()
   }
 
@@ -74,6 +78,7 @@ class Crud extends Component {
         fileRef.getDownloadURL()
         .then(url => {
           db.ref(`notes/${note}`).update({
+            image_name: image.name,
             image_url: url
           })
         })
@@ -98,7 +103,7 @@ class Crud extends Component {
                     <span className="card-title">{ JSON.stringify(notes[noteId].title) }</span>
                     <p>{ JSON.stringify(notes[noteId].content)}</p>
                   </div>
-                  <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(noteId)}>Delete</button>
+                  <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(noteId, notes[noteId].image_name)}>Delete</button>
                   <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(noteId)}>Update</button>
                   {
                     notes[noteId].image_url === "" ?
