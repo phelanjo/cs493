@@ -29,10 +29,6 @@ code {
   margin: 20px;
 }
 
-#delete {
-  margin: 10px;
-}
-
-#update {
+#delete, #back, #update, #upload {
   margin: 10px;
 }
