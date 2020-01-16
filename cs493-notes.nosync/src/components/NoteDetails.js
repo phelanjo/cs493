@@ -19,8 +19,6 @@ class NoteDetails extends Component {
                   <div className="card-content">
                     <span className="card-title">{ JSON.stringify(notes[noteId].title) }</span>
                     <p>{ JSON.stringify(notes[noteId].content)}</p>
-                  </div>
-                  <div>
                     <img alt="" src={notes[noteId].image_url}/>
                   </div>
                   <button className="btn teal darken-1" id="back" onClick={() => this.goBack()}>Back</button>
