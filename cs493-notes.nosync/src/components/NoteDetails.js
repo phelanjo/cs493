@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 
 class NoteDetails extends Component {
-
   goBack = () => {
     this.props.history.push('/crud')
   }
@@ -20,8 +19,11 @@ class NoteDetails extends Component {
                   <div className="card-content">
                     <span className="card-title">{ JSON.stringify(notes[noteId].title) }</span>
                     <p>{ JSON.stringify(notes[noteId].content)}</p>
-                    <button className="btn teal darken-1" id="delete" onClick={() => this.goBack()}>Back</button>
                   </div>
+                  <div>
+                    <img alt="" src={notes[noteId].image_url}/>
+                  </div>
+                  <button className="btn teal darken-1" id="back" onClick={() => this.goBack()}>Back</button>
                 </div>
               :
                 null
