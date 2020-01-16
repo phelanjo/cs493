@@ -102,6 +102,7 @@ class Crud extends Component {
                   <div onClick={() => this.sendToNoteDetails(noteId)} className="card-content">
                     <span className="card-title">{ JSON.stringify(notes[noteId].title) }</span>
                     <p>{ JSON.stringify(notes[noteId].content)}</p>
+                    <img alt="" src={notes[noteId].image_url}/>
                   </div>
                   <button className="btn teal darken-1" id="delete" onClick={() => this.deleteNote(noteId, notes[noteId].image_name)}>Delete</button>
                   <button className="btn teal darken-1" id="update" onClick={() => this.updateNote(noteId)}>Update</button>
@@ -124,9 +125,6 @@ class Crud extends Component {
                     :
                       null
                   }
-                  <div>
-                    <img alt="" src={notes[noteId].image_url}/>
-                  </div>
                 </div>
 
               )
