@@ -24,3 +24,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+#create {
+  margin: 20px;
+}
+
+#delete {
+  margin: 10px;
+}
+
+#update {
+  margin: 10px;
+}
