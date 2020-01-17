@@ -9,29 +9,35 @@ class SignIn extends Component {
     user: null
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     })
   }
 
-  googleLogin = (e) => {
+  googleLogin = e => {
     e.preventDefault()
     var googleProvider = new firebase.auth.GoogleAuthProvider()
 
-    firebase.auth().signInWithPopup(googleProvider).then((result) => {
-      this.setState({
-        user: result.user,
-        email: result.user.email
+    firebase
+      .auth()
+      .signInWithPopup(googleProvider)
+      .then(result => {
+        this.setState({
+          user: result.user,
+          email: result.user.email
+        })
       })
-    }).catch((err) => {
-      console.log(err)
-    })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
-  signIn = (e) => {
+  signIn = e => {
     e.preventDefault()
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then(user => {
         this.setState({
           user
@@ -47,7 +53,12 @@ class SignIn extends Component {
   }
 
   render() {
-    if (this.state.user) return <Redirect to={{pathname: '/dashboard', state: { email: this.state.email }}} />
+    if (this.state.user)
+      return (
+        <Redirect
+          to={{ pathname: '/dashboard', state: { email: this.state.email } }}
+        />
+      )
     return (
       <div className="container">
         <form id="signIn">
@@ -60,15 +71,23 @@ class SignIn extends Component {
             <input type="password" id="password" onChange={this.handleChange} />
           </div>
           <div className="input-field">
-            <button className="btn teal darken-1 left" onClick={this.signIn}>Sign In</button>
+            <button className="btn teal darken-1 left" onClick={this.signIn}>
+              Sign In
+            </button>
           </div>
           <div>
-            <button className="btn teal darken-1 right" onClick={this.signUp}>Sign Up</button>
+            <button className="btn teal darken-1 right" onClick={this.signUp}>
+              Sign Up
+            </button>
           </div>
-          <br/><br/><br/>
+          <br />
+          <br />
+          <br />
           <div className="center">
             <div>
-              <button className="btn teal darken-1" onClick={this.googleLogin}>Google Sign In</button>
+              <button className="btn teal darken-1" onClick={this.googleLogin}>
+                Google Sign In
+              </button>
             </div>
           </div>
         </form>
