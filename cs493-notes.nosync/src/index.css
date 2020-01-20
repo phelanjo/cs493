@@ -29,10 +29,13 @@ code {
   margin: 20px;
 }
 
-#delete {
+#delete,
+#back,
+#update,
+#upload {
   margin: 10px;
 }
 
-#update {
+img {
   margin: 10px;
 }

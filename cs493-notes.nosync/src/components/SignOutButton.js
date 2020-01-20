@@ -3,9 +3,10 @@ import { withRouter } from 'react-router-dom'
 import firebase from '../config/firebaseConfig'
 
 class SignOutButton extends Component {
-
   logout = () => {
-    firebase.auth().signOut()
+    firebase
+      .auth()
+      .signOut()
       .then(() => {
         this.props.history.push('/')
       })
@@ -17,7 +18,9 @@ class SignOutButton extends Component {
   render() {
     return (
       <div>
-        <button className="btn teal darken-1" onClick={this.logout}>Sign Out</button>
+        <button className="btn teal darken-1" onClick={this.logout}>
+          Sign Out
+        </button>
       </div>
     )
   }

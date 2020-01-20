@@ -9,27 +9,40 @@ class SignUp extends Component {
     user: null
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({
       [e.target.id]: e.target.value
     })
   }
 
-  signUp = (e) => {
+  signUp = e => {
     e.preventDefault()
-    firebase.auth().createUserWithEmailAndPassword(this.state.signUpEmail, this.state.signUpPassword)
-    .then(user => {
-      this.setState({
-        user
+    firebase
+      .auth()
+      .createUserWithEmailAndPassword(
+        this.state.signUpEmail,
+        this.state.signUpPassword
+      )
+      .then(user => {
+        this.setState({
+          user
+        })
       })
-    })
-    .catch(err => {
-      console.log(err)
-    })
+      .catch(err => {
+        console.log(err)
+      })
   }
 
   render() {
-    if (this.state.user) return <Redirect to={{pathname: '/dashboard', state: { email: this.state.signUpEmail }}} />
+    if (this.state.user)
+      return (
+        <Redirect
+          to={{
+            pathname: '/dashboard',
+            state: { email: this.state.signUpEmail }
+          }}
+        />
+      )
 
     return (
       <div className="container">
@@ -40,12 +53,19 @@ class SignUp extends Component {
           </div>
           <div className="input-field">
             <label htmlFor="password">Password</label>
-            <input type="password" id="signUpPassword" onChange={this.handleChange} />
+            <input
+              type="password"
+              id="signUpPassword"
+              onChange={this.handleChange}
+            />
           </div>
           <div className="input-field">
-            <button className="btn teal darken-1 right" id="signUpButton">Sign Up</button>
+            <button className="btn teal darken-1 right" id="signUpButton">
+              Sign Up
+            </button>
           </div>
-          <br/><br/>
+          <br />
+          <br />
         </form>
       </div>
     )
