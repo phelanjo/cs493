@@ -24,9 +24,9 @@ class Crud extends Component {
           user,
           isLoaded: true
         })
+        this.readNotes()
       }
     })
-    this.readNotes()
   }
 
   componentWillUnmount() {
