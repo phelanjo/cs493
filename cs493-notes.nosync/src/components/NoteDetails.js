@@ -6,7 +6,7 @@ class NoteDetails extends Component {
   }
 
   renderNote = () => {
-    const notes = this.props.location.state.notes
+    const notes = this.props.location.state
     const pathId = this.props.location.pathname.split('/').pop()
 
     return (
