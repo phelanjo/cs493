@@ -1,20 +1,36 @@
 import React, { Component } from 'react'
 import firebase, { db } from '../config/firebaseConfig'
-import { withRouter } from 'react-router-dom'
 
 class Crud extends Component {
+  _isMounted = false // src: https://stackoverflow.com/questions/53949393/cant-perform-a-react-state-update-on-an-unmounted-component
+
   constructor(props) {
     super(props)
 
     this.state = {
-      loaded: false,
+      isLoaded: false,
       notes: {},
-      image: null
+      image: null,
+      user: null
     }
   }
 
   componentDidMount() {
+    this._isMounted = true
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (this._isMounted) {
+        this.setState({
+          user,
+          isLoaded: true
+        })
+      }
+    })
     this.readNotes()
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   createNote = () => {
@@ -27,7 +43,7 @@ class Crud extends Component {
       'Black Cat'
     ]
 
-    db.ref('notes/').push({
+    db.ref(`${firebase.auth().currentUser.uid}/notes/`).push({
       title: titles[Math.floor(Math.random() * titles.length)],
       content: contents[Math.floor(Math.random() * contents.length)],
       image_url: '',
@@ -37,9 +53,11 @@ class Crud extends Component {
 
   deleteNote = (note, image_name) => {
     let rootRef = firebase.storage().ref()
-    let imageRef = rootRef.child(`images/${note}/${image_name}`)
+    let imageRef = rootRef.child(
+      `${firebase.auth().currentUser.uid}/images/${note}/${image_name}`
+    )
     imageRef.delete()
-    db.ref(`notes/${note}`).remove()
+    db.ref(`${firebase.auth().currentUser.uid}/notes/${note}`).remove()
   }
 
   updateNote = note => {
@@ -52,24 +70,26 @@ class Crud extends Component {
       'Black Cat'
     ]
 
-    db.ref(`notes/${note}`).update({
+    db.ref(`${firebase.auth().currentUser.uid}/notes/${note}`).update({
       title: titles[Math.floor(Math.random() * titles.length)],
       content: contents[Math.floor(Math.random() * contents.length)]
     })
   }
 
   readNotes = () => {
-    db.ref('notes/').on('value', snapshot => {
-      this.setState({
-        notes: snapshot.val(),
-        loaded: true
-      })
-    })
+    db.ref(`${firebase.auth().currentUser.uid}/notes/`).on(
+      'value',
+      snapshot => {
+        this.setState({
+          notes: snapshot.val()
+        })
+      }
+    )
   }
 
   sendToNoteDetails = note => {
-    const state = this.state
-    this.props.history.push(`notes/${note}`, state)
+    const notes = this.state.notes
+    this.props.history.push(`notes/${note}`, notes)
   }
 
   handleChange = e => {
@@ -82,13 +102,15 @@ class Crud extends Component {
   handleUpload = note => {
     const { image } = this.state
     let rootRef = firebase.storage().ref()
-    let fileRef = rootRef.child(`images/${note}/${image.name}`)
+    let fileRef = rootRef.child(
+      `${firebase.auth().currentUser.uid}/images/${note}/${image.name}`
+    )
 
     fileRef
       .put(image)
       .then(() => {
         fileRef.getDownloadURL().then(url => {
-          db.ref(`notes/${note}`).update({
+          db.ref(`${firebase.auth().currentUser.uid}/notes/${note}`).update({
             image_name: image.name,
             image_url: url
           })
@@ -101,9 +123,11 @@ class Crud extends Component {
 
   renderList = () => {
     const { notes } = this.state
+    const user = firebase.auth().currentUser
 
     return notes ? (
       <div className="center">
+        <h1 className="white-text">Welcome {user.email}</h1>
         <button
           className="btn teal darken-1"
           id="create"
@@ -183,10 +207,10 @@ class Crud extends Component {
   render() {
     return (
       <div className="container">
-        {this.state.loaded ? this.renderList() : null}
+        {this.state.isLoaded ? this.renderList() : null}
       </div>
     )
   }
 }
 
-export default withRouter(Crud)
+export default Crud
