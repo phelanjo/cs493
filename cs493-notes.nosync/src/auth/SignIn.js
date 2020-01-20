@@ -24,8 +24,7 @@ class SignIn extends Component {
       .signInWithPopup(googleProvider)
       .then(result => {
         this.setState({
-          user: result.user,
-          email: result.user.email
+          user: result.user
         })
       })
       .catch(err => {
@@ -53,13 +52,9 @@ class SignIn extends Component {
   }
 
   render() {
-    if (this.state.user)
-      return (
-        <Redirect
-          to={{ pathname: '/dashboard', state: { email: this.state.email } }}
-        />
-      )
-    return (
+    return this.state.user !== null ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <div className="container">
         <form id="signIn">
           <div className="input-field">
