@@ -11,7 +11,8 @@ class Crud extends Component {
       isLoaded: false,
       notes: {},
       image: null,
-      user: null
+      user: null,
+      progress: 0
     }
   }
 
@@ -48,6 +49,10 @@ class Crud extends Component {
       content: contents[Math.floor(Math.random() * contents.length)],
       image_url: '',
       image_name: ''
+    })
+
+    this.setState({
+      progress: 0
     })
   }
 
@@ -105,20 +110,30 @@ class Crud extends Component {
     let fileRef = rootRef.child(
       `${firebase.auth().currentUser.uid}/images/${note}/${image.name}`
     )
+    const uploadTask = fileRef.put(image)
 
-    fileRef
-      .put(image)
-      .then(() => {
+    uploadTask.on(
+      'state_changed',
+      snapshot => {
+        const uploadProgress = Math.round(
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+        )
+        this.setState({
+          progress: uploadProgress
+        })
+      },
+      err => {
+        console.log(err)
+      },
+      () => {
         fileRef.getDownloadURL().then(url => {
           db.ref(`${firebase.auth().currentUser.uid}/notes/${note}`).update({
             image_name: image.name,
             image_url: url
           })
         })
-      })
-      .catch(err => {
-        console.log(err)
-      })
+      }
+    )
   }
 
   renderList = () => {
@@ -175,6 +190,14 @@ class Crud extends Component {
                       <div className="file-path-wrapper white">
                         <input className="file-path validate" type="text" />
                       </div>
+                      {this.state.progress !== 0 ? (
+                        <div className="progress">
+                          <div
+                            className="determinate"
+                            style={{ width: this.state.progress + '%' }}
+                          />
+                        </div>
+                      ) : null}
                     </div>
                   </form>
                   <button
