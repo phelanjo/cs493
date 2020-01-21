@@ -35,9 +35,7 @@ class Navbar extends Component {
     ) : (
       <nav className="nav-wrapper teal dearken-1">
         <div className="container">
-          <Link to="/" className="brand-logo">
-            Notes
-          </Link>
+          <h5 className="brand-logo">Notes</h5>
         </div>
       </nav>
     )
