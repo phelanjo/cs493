@@ -142,7 +142,7 @@ class Crud extends Component {
 
     return notes ? (
       <div className="center">
-        <h1 className="white-text">Welcome {user.email}</h1>
+        <h3 className="white-text">Welcome {user.email}</h3>
         <button
           className="btn teal darken-1"
           id="create"
