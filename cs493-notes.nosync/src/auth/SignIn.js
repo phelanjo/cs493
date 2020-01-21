@@ -3,10 +3,30 @@ import firebase from '../config/firebaseConfig'
 import { Redirect } from 'react-router-dom'
 
 class SignIn extends Component {
+  _isMounted = false
+
   state = {
     email: '',
     password: '',
-    user: null
+    user: null,
+    isLoaded: false
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (this._isMounted) {
+        this.setState({
+          user,
+          isLoaded: true
+        })
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   handleChange = e => {
@@ -51,7 +71,7 @@ class SignIn extends Component {
     this.props.history.push('/signup')
   }
 
-  render() {
+  renderSignIn = () => {
     return this.state.user !== null ? (
       <Redirect to="/dashboard" />
     ) : (
@@ -88,6 +108,10 @@ class SignIn extends Component {
         </form>
       </div>
     )
+  }
+
+  render() {
+    return <div>{this.state.isLoaded ? this.renderSignIn() : null}</div>
   }
 }
 
