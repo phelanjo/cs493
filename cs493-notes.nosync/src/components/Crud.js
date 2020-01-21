@@ -215,6 +215,7 @@ class Crud extends Component {
       </div>
     ) : (
       <div className="center">
+        <h3 className="white-text">Welcome {user.email}</h3>
         <button
           className="btn teal darken-1"
           id="create"
