@@ -11,6 +11,7 @@
   "license": "ISC",
   "dependencies": {
     "aws-sdk": "^2.612.0",
+    "mime-types": "^2.1.26",
     "yargs": "^15.1.0"
   }
 }
