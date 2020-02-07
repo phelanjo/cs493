@@ -1,6 +1,8 @@
 var AWS = require('aws-sdk')
 
-var sts = new AWS.STS()
+var sts = new AWS.STS({
+  region: 'us-east-1'
+})
 
 const argv = require('yargs')
   .option('roleArn', {
