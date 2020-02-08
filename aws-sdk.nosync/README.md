@@ -1,25 +1,25 @@
-#CS 493 AWS-SDK
+# CS 493 AWS-SDK
 
-##How To Use:
+## How To Use:
 
 - Clone the project from the repo
 - Install dependencies using `node install`
 - Navigate to project directory
 
-###assumeRole
+### assumeRole
 
 - node assumeRole --rA `your-role-arn` --rSN `your-role-session-name`
 
-Options --rA and --rSN are required.
+_Options --rA and --rSN are required._
 
-###fileUploader
+### fileUploader
 
 - node fileUploader -p `path/to/file` -b `name-of-s3-bucket` -n `new file name (rename)`
 
-Options -p -b -a are required.
+_Options -p -b -a are required._
 
-###dirUploader
+### dirUploader
 
 - node dirUploader -p `path/to/dir/` -b `name-of-s3-bucket` -n `new dir name (rename)`
 
-Options -p -b -a are required.
+_Options -p -b -a are required._
