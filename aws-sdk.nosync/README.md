@@ -6,20 +6,20 @@
 - Install dependencies using `node install`
 - Navigate to project directory
 
-### assumeRole
+### assumeRole example:
 
-- node assumeRole --rA `your-role-arn` --rSN `your-role-session-name`
+`node assumeRole --rA your-role-arn --rSN your-role-session-name`
 
 _Options --rA and --rSN are required._
 
-### fileUploader
+### fileUploader example:
 
-- node fileUploader -p `path/to/file` -b `name-of-s3-bucket` -n `new file name (rename)`
+`node fileUploader -p path/to/file -b name-of-s3-bucket -n new file name (rename)`
 
 _Options -p -b -a are required._
 
-### dirUploader
+### dirUploader example:
 
-- node dirUploader -p `path/to/dir/` -b `name-of-s3-bucket` -n `new dir name (rename)`
+`node dirUploader -p path/to/dir/ -b name-of-s3-bucket -n new dir name (rename)`
 
 _Options -p -b -a are required._
