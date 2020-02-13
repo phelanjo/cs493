@@ -3,10 +3,30 @@ import firebase from '../config/firebaseConfig'
 import { Redirect } from 'react-router-dom'
 
 class SignIn extends Component {
+  _isMounted = false
+
   state = {
     email: '',
     password: '',
-    user: null
+    user: null,
+    isLoaded: false
+  }
+
+  componentDidMount() {
+    this._isMounted = true
+
+    firebase.auth().onAuthStateChanged(user => {
+      if (this._isMounted) {
+        this.setState({
+          user,
+          isLoaded: true
+        })
+      }
+    })
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false
   }
 
   handleChange = e => {
@@ -24,8 +44,7 @@ class SignIn extends Component {
       .signInWithPopup(googleProvider)
       .then(result => {
         this.setState({
-          user: result.user,
-          email: result.user.email
+          user: result.user
         })
       })
       .catch(err => {
@@ -52,14 +71,10 @@ class SignIn extends Component {
     this.props.history.push('/signup')
   }
 
-  render() {
-    if (this.state.user)
-      return (
-        <Redirect
-          to={{ pathname: '/dashboard', state: { email: this.state.email } }}
-        />
-      )
-    return (
+  renderSignIn = () => {
+    return this.state.user !== null ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <div className="container">
         <form id="signIn">
           <div className="input-field">
@@ -93,6 +108,10 @@ class SignIn extends Component {
         </form>
       </div>
     )
+  }
+
+  render() {
+    return <div>{this.state.isLoaded ? this.renderSignIn() : null}</div>
   }
 }
 

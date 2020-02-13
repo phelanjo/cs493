@@ -8,6 +8,10 @@ body {
   background: #333;
 }
 
+html {
+  overflow-y: overlay;
+}
+
 form {
   padding: 20px;
   margin-top: 60px;
@@ -38,4 +42,6 @@ code {
 
 img {
   margin: 10px;
+  max-width: 800px;
+  max-height: 800px;
 }

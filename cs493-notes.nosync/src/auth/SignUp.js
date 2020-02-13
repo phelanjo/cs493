@@ -34,17 +34,9 @@ class SignUp extends Component {
   }
 
   render() {
-    if (this.state.user)
-      return (
-        <Redirect
-          to={{
-            pathname: '/dashboard',
-            state: { email: this.state.signUpEmail }
-          }}
-        />
-      )
-
-    return (
+    return this.state.user !== null ? (
+      <Redirect to="/dashboard" />
+    ) : (
       <div className="container">
         <form id="signUp" onSubmit={this.signUp}>
           <div className="input-field">
