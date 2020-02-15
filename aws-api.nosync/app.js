@@ -48,6 +48,7 @@ app.get('/', (req, res) => {
     .promise()
     .then(s3Res => {
       const files = parsePath(s3Res.Contents);
+      res.send('Hey Johnny');
       res.send(files);
     })
     .catch(err => {
