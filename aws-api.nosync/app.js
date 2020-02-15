@@ -10,6 +10,8 @@ const port = 8080;
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,POST');
+  // https://stackoverflow.com/a/58320564/9487966
+  res.header('Set-Cookie', 'HttpOnly;Secure;SameSite=None');
   res.header(
     'Access-Control-Allow-Headers',
     'Origin, X-Requested-With, Content-Type, Accept'
