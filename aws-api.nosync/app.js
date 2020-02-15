@@ -1,7 +1,7 @@
 const express = require('express');
-// const AWS = require('aws-sdk');
-// const bodyParser = require('body-parser');
-// const _ = require('lodash');
+const AWS = require('aws-sdk');
+const bodyParser = require('body-parser');
+const _ = require('lodash');
 
 const app = express();
 const port = 8080;
