@@ -4,7 +4,7 @@ const express = require('express');
 // const _ = require('lodash');
 
 const app = express();
-const port = 4444;
+const port = 8080;
 
 app.get('/', (req, res) => res.send('Test'));
 // Borrowed from here - https://stackoverflow.com/a/56787535/9487966
