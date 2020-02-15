@@ -12,7 +12,7 @@ class App extends Component {
   };
 
   componentDidMount() {
-    fetch('http://127.0.0.1:4444')
+    fetch('http://3.82.61.176:4444')
       .then(res => {
         return res.json();
       })
@@ -71,7 +71,7 @@ class App extends Component {
       })
     };
 
-    fetch('http://127.0.0.1:4444', params)
+    fetch('http://3.82.61.176:4444', params)
       .then(res => res.json())
       .then(res => {
         // help from -- https://stackoverflow.com/a/43578104/9487966

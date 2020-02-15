@@ -40,6 +40,7 @@ function parsePath(fp) {
 app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
+  res.send('Hey Johnny');
   const s3 = new AWS.S3();
   const params = {
     Bucket: 'phelanjo-hw6-bucket'
@@ -48,7 +49,6 @@ app.get('/', (req, res) => {
     .promise()
     .then(s3Res => {
       const files = parsePath(s3Res.Contents);
-      res.send('Hey Johnny');
       res.send(files);
     })
     .catch(err => {
