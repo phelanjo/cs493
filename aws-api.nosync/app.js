@@ -65,6 +65,7 @@ app.post('/', (req, res) => {
     Key: _.get(req, 'body.key')
   };
   const url = s3.getSignedUrl('getObject', params);
+  console.log(url);
   res.status(200).send({ url });
 });
 
