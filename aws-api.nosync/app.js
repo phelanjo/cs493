@@ -64,9 +64,15 @@ app.post('/', (req, res) => {
     Bucket: 'phelanjo-hw6-bucket',
     Key: _.get(req, 'body.key')
   };
-  const url = s3.getSignedUrl('getObject', params);
-  console.log(url);
-  res.status(200).send({ url });
+  s3.getSignedUrlPromise('getObject', params)
+    .then(url => {
+      console.log({ url });
+      res.status(200).send({ url });
+    })
+    .catch(err => {
+      console.log({ err });
+      res.status(400).send({ err });
+    });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
