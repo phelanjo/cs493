@@ -41,38 +41,185 @@ function parsePath(fp) {
 
 app.use(bodyParser.json());
 
-app.get('/', (req, res) => {
-  const s3 = new AWS.S3();
-  const params = {
-    Bucket: 'phelanjo-hw6-bucket'
-  };
-  s3.listObjectsV2(params)
-    .promise()
-    .then(s3Res => {
-      const files = parsePath(s3Res.Contents);
-      res.send(files);
-    })
-    .catch(err => {
-      console.log(err);
-      return Promise.reject(err);
+sts.assumeRole(roleToAssume, (err, data) => {
+  if (err) console.log(err);
+  else {
+    AWS.config.update({
+      accessKeyId: data.Credentials.AccessKeyId,
+      secretAccessKey: data.Credentials.SecretAccessKey,
+      sessionToken: data.Credentials.SessionToken
     });
-});
+  }
+  app.get('/', (req, res) => {
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: 'phelanjo-hw6-bucket'
+    };
+    s3.listObjectsV2(params)
+      .promise()
+      .then(s3Res => {
+        const files = parsePath(s3Res.Contents);
+        res.send(files);
+      })
+      .catch(err => {
+        console.log(err);
+        return Promise.reject(err);
+      });
+  });
 
-app.post('/', (req, res) => {
-  const s3 = new AWS.S3();
-  const params = {
-    Bucket: 'phelanjo-hw6-bucket',
-    Key: _.get(req, 'body.key')
-  };
-  s3.getSignedUrlPromise('getObject', params)
-    .then(url => {
-      console.log({ url });
-      res.status(200).send({ url });
-    })
-    .catch(err => {
-      console.log({ err });
-      res.status(400).send({ err });
+  function getSignedUrl(key) {
+    const s3 = new AWS.S3();
+    const params = {
+      Bucket: 'phelanjo-hw6-bucket',
+      Key: key
+    };
+    return s3.getSignedUrlPromise('getObject', params);
+  }
+
+  function scanDynamo(params) {
+    const documentClient = new AWS.DynamoDB.DocumentClient({
+      region: 'us-east-1'
     });
+
+    return documentClient.scan(params).promise();
+  }
+
+  function queryDynamo(params) {
+    const documentClient = new AWS.DynamoDB.DocumentClient({
+      region: 'us-east-1'
+    });
+
+    return documentClient.query(params).promise();
+  }
+
+  app.get('/genres', (req, res) => {
+    const params = {
+      TableName: 'music',
+      AttributesToGet: ['genre']
+    };
+
+    scanDynamo(params)
+      .then(items => {
+        if (items.Count < 1) {
+          return res.status(404).send('No genres found');
+        }
+        return res
+          .status(200)
+          .send(_.uniq(_.map(items.Items, item => item.genre)));
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
+
+  app.get('/artists/for/genre', (req, res) => {
+    const genre = req.query.genre;
+
+    const params = {
+      TableName: 'music',
+      KeyConditionExpression: 'genre = :genre',
+      ExpressionAttributeValues: {
+        ':genre': genre
+      }
+    };
+
+    queryDynamo(params)
+      .then(items => {
+        if (items.Count < 1) {
+          return res
+            .status(404)
+            .send(`No artists found for the ${genre} genre`);
+        }
+        return res
+          .status(200)
+          .send(_.uniq(_.map(items.Items, item => item.artist)));
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
+
+  app.get('/albums/for/artist', (req, res) => {
+    const artist = req.query.artist;
+
+    const params = {
+      TableName: 'music',
+      IndexName: 'artist-album',
+      KeyConditionExpression: 'artist = :artist',
+      ExpressionAttributeValues: {
+        ':artist': artist
+      }
+    };
+
+    queryDynamo(params)
+      .then(items => {
+        if (items.Count < 1) {
+          return res.status(404).send(`No albums found for ${artist}`);
+        }
+        return res
+          .status(200)
+          .send(_.uniq(_.map(items.Items, item => item.album)));
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
+
+  app.get('/songs/for/album', (req, res) => {
+    const album = req.query.album;
+
+    const params = {
+      TableName: 'music',
+      IndexName: 'album-song',
+      KeyConditionExpression: 'album = :album',
+      ExpressionAttributeValues: {
+        ':album': album
+      }
+    };
+
+    queryDynamo(params)
+      .then(items => {
+        if (items.Count < 1) {
+          return res
+            .status(404)
+            .send(`No songs found for the album "${album}"`);
+        }
+        return res
+          .status(200)
+          .send(_.uniq(_.map(items.Items, item => item.song)));
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
+
+  app.get('/song', (req, res) => {
+    const song = req.query.song;
+
+    const params = {
+      TableName: 'music',
+      FilterExpression: 'song = :song',
+      ExpressionAttributeValues: {
+        ':song': song
+      }
+    };
+
+    scanDynamo(params)
+      .then(items => {
+        if (items.Count < 1) {
+          return res.status(404).send(`The song "${song}" was not found`);
+        }
+        return getSignedUrl(
+          `${items.Items[0].artist}/${items.Items[0].album}/${items.Items[0].song}.mp3`
+        );
+      })
+      .then(url => {
+        return res.status(200).send({ url });
+      })
+      .catch(err => {
+        return res.status(500).send(err);
+      });
+  });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
