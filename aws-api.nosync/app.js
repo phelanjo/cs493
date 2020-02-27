@@ -228,7 +228,7 @@ app.post('/save-user', (req, res) => {
 
   putDynamo(params)
     .then(result => {
-      return result.status(200).send(result);
+      return res.status(200).send(result);
     })
     .catch(err => {
       return res.status(500).send(err);
