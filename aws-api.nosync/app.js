@@ -83,6 +83,14 @@ function queryDynamo(params) {
   return documentClient.query(params).promise();
 }
 
+function putDynamo(params) {
+  const documentClient = new AWS.DynamoDB.DocumentClient({
+    region: 'us-east-1'
+  });
+
+  return documentClient.put(params).promise();
+}
+
 app.get('/genres', (req, res) => {
   const params = {
     TableName: 'music',
@@ -202,6 +210,25 @@ app.get('/song', (req, res) => {
     })
     .then(url => {
       return res.status(200).send({ url });
+    })
+    .catch(err => {
+      return res.status(500).send(err);
+    });
+});
+
+app.post('/save-user', (req, res) => {
+  const params = {
+    Item: {
+      display_name: req.body.display_name,
+      email: req.body.email,
+      user_id: req.body.user_id
+    },
+    TableName: 'music'
+  };
+
+  putDynamo(params)
+    .then(result => {
+      return result.status(200).send(result);
     })
     .catch(err => {
       return res.status(500).send(err);
