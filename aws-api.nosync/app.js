@@ -219,11 +219,11 @@ app.get('/song', (req, res) => {
 app.post('/save-user', (req, res) => {
   const params = {
     Item: {
-      display_name: req.body.display_name,
+      user_id: req.body.user_id,
       email: req.body.email,
-      user_id: req.body.user_id
+      display_name: req.body.display_name
     },
-    TableName: 'music'
+    TableName: 'users'
   };
 
   putDynamo(params)
