@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import firebase from '../config/firebaseConfig';
 
+const API_ADDRESS = 'http://100.26.183.29:8080';
+
 class Auth extends Component {
   _isMounted = false;
 
@@ -55,6 +57,26 @@ class Auth extends Component {
           user: result.user,
           isLoggedIn: true
         });
+
+        const params = {
+          method: 'POST',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            user_id: result.user.uid,
+            email: result.user.email,
+            display_name: result.user.display_name
+          })
+        };
+
+        fetch(`${API_ADDRESS}/save-user`, params)
+          .then(res => res.json())
+          .catch(err => {
+            console.log(err);
+          });
+
         this.sendAuthData();
       })
       .catch(err => {
