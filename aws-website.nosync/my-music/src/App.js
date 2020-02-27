@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar';
 import Auth from './components/Auth';
 
-const API_ADDRESS = 'http://100.26.183.29:8080';
+const API_ADDRESS = 'http://54.205.128.64:8080';
 
 class App extends Component {
   _isMounted = false;

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import firebase from '../config/firebaseConfig';
 
-const API_ADDRESS = 'http://100.26.183.29:8080';
+const API_ADDRESS = 'http://54.205.128.64:8080';
 
 class Auth extends Component {
   _isMounted = false;
@@ -67,7 +67,7 @@ class Auth extends Component {
           body: JSON.stringify({
             user_id: result.user.uid,
             email: result.user.email,
-            display_name: result.user.display_name
+            display_name: result.user.displayName
           })
         };
 
