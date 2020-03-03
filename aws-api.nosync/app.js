@@ -216,23 +216,23 @@ app.get('/song', (req, res) => {
     });
 });
 
-app.post('/save-user', (req, res) => {
-  const params = {
-    Item: {
-      user_id: req.body.user_id,
-      email: req.body.email,
-      display_name: req.body.display_name
-    },
-    TableName: 'users'
-  };
+// app.post('/save-user', (req, res) => {
+//   const params = {
+//     Item: {
+//       user_id: req.body.user_id,
+//       email: req.body.email,
+//       display_name: req.body.display_name
+//     },
+//     TableName: 'users'
+//   };
 
-  putDynamo(params)
-    .then(result => {
-      return res.status(200).send(result);
-    })
-    .catch(err => {
-      return res.status(500).send(err);
-    });
-});
+//   putDynamo(params)
+//     .then(result => {
+//       return res.status(200).send(result);
+//     })
+//     .catch(err => {
+//       return res.status(500).send(err);
+//     });
+// });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
