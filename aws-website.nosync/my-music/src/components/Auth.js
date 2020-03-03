@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import firebase from '../config/firebaseConfig';
 
-const API_ADDRESS = 'http://54.205.128.64:8080';
+const SLS_ENDPOINT =
+  'https://0zqp3z5apc.execute-api.us-east-1.amazonaws.com/dev';
 
 class Auth extends Component {
   _isMounted = false;
@@ -71,7 +72,7 @@ class Auth extends Component {
           })
         };
 
-        fetch(`${API_ADDRESS}/save-user`, params)
+        fetch(`${SLS_ENDPOINT}/save-user`, params)
           .then(res => res.json())
           .catch(err => {
             console.log(err);
