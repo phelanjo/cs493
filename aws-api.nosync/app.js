@@ -83,14 +83,6 @@ function queryDynamo(params) {
   return documentClient.query(params).promise();
 }
 
-function putDynamo(params) {
-  const documentClient = new AWS.DynamoDB.DocumentClient({
-    region: 'us-east-1'
-  });
-
-  return documentClient.put(params).promise();
-}
-
 app.get('/genres', (req, res) => {
   const params = {
     TableName: 'music',
@@ -215,24 +207,5 @@ app.get('/song', (req, res) => {
       return res.status(500).send(err);
     });
 });
-
-// app.post('/save-user', (req, res) => {
-//   const params = {
-//     Item: {
-//       user_id: req.body.user_id,
-//       email: req.body.email,
-//       display_name: req.body.display_name
-//     },
-//     TableName: 'users'
-//   };
-
-//   putDynamo(params)
-//     .then(result => {
-//       return res.status(200).send(result);
-//     })
-//     .catch(err => {
-//       return res.status(500).send(err);
-//     });
-// });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
