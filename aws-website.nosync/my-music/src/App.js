@@ -4,6 +4,8 @@ import Navbar from './components/Navbar';
 import Auth from './components/Auth';
 
 const API_ADDRESS = 'http://3.82.240.189:8080';
+const SLS_ENDPOINT =
+  'https://27kj3xgdai.execute-api.us-east-1.amazonaws.com/dev';
 
 class App extends Component {
   _isMounted = false;
@@ -14,6 +16,7 @@ class App extends Component {
     this.state = {
       isLoggedIn: false,
       isLoaded: false,
+      user: null,
 
       genres: null,
       selectedGenre: null,
@@ -47,6 +50,7 @@ class App extends Component {
   getAuthData = authData => {
     this.setState({
       isLoggedIn: authData.isLoggedIn,
+      user: authData.user,
       isLoaded: true,
       selectedGenre: null,
       selectedArtist: null,
@@ -184,6 +188,12 @@ class App extends Component {
                   >
                     {song}
                   </button>
+                  <button
+                    className={'btn-floating teal darken-3 right'}
+                    onClick={() => this.addSongToPlaylist(index)}
+                  >
+                    <i className={'material-icons'}>add</i>
+                  </button>
                 </td>
               </tr>
             );
@@ -261,6 +271,30 @@ class App extends Component {
           }
         );
       })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  addSongToPlaylist(index) {
+    const { songs, user, selectedArtist, selectedAlbum } = this.state;
+    const selectedSong = songs[index];
+
+    const params = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        user_id: user.uid,
+        artist_album_song: `${selectedArtist}/${selectedAlbum}/${selectedSong}`
+      })
+    };
+
+    fetch(`${SLS_ENDPOINT}/user/playlist`, params)
+      .then(res => res.json())
+      .then(res => console.log(res))
       .catch(err => {
         console.log(err);
       });

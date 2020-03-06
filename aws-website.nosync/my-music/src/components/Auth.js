@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import firebase from '../config/firebaseConfig';
 
 const SLS_ENDPOINT =
-  'https://0zqp3z5apc.execute-api.us-east-1.amazonaws.com/dev';
+  'https://27kj3xgdai.execute-api.us-east-1.amazonaws.com/dev';
 
 class Auth extends Component {
   _isMounted = false;
