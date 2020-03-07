@@ -6,6 +6,9 @@ const _ = require('lodash');
 const app = express();
 const port = 8080;
 
+const SQS_ENDPOINT =
+  'https://sqs.us-east-1.amazonaws.com/314587419725/reporting';
+
 // Borrowed from here - https://stackoverflow.com/a/56787535/9487966
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
@@ -206,6 +209,34 @@ app.get('/song', (req, res) => {
     .catch(err => {
       return res.status(500).send(err);
     });
+
+  app.post('/play', (req, res) => {
+    const artist = req.body.artist;
+    const album = req.body.artist;
+    const song = req.body.song;
+    const sqs = new AWS.SQS({ region: 'us-east-1' });
+
+    const params = {
+      MessageBody: JSON.stringify({
+        artist,
+        album,
+        song
+      }),
+      QueueUrl: SQS_ENDPOINT
+    };
+
+    sqs
+      .sendMessage(params)
+      .promise()
+      .then(sqsResponse => {
+        return res
+          .status(200)
+          .send(`REPORTED -- Message ID: ${sqsResponse.MessageId}`);
+      })
+      .catch(err => {
+        return res.status(500).send(`ERROR -- ${err}`);
+      });
+  });
 });
 
 app.listen(port, () => console.log(`App listening on port ${port}!`));
