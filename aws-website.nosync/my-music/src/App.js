@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Navbar from './components/Navbar';
 import Auth from './components/Auth';
 
-const API_ADDRESS = 'http://3.82.240.189:8080';
+const API_ADDRESS = 'http://3.86.60.51:8080';
 const SLS_ENDPOINT =
   'https://u8mez4bfl5.execute-api.us-east-1.amazonaws.com/dev';
 
