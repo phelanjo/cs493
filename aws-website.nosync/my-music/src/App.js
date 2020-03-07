@@ -5,7 +5,7 @@ import Auth from './components/Auth';
 
 const API_ADDRESS = 'http://3.82.240.189:8080';
 const SLS_ENDPOINT =
-  'https://27kj3xgdai.execute-api.us-east-1.amazonaws.com/dev';
+  'https://u8mez4bfl5.execute-api.us-east-1.amazonaws.com/dev';
 
 class App extends Component {
   _isMounted = false;
@@ -207,7 +207,7 @@ class App extends Component {
     const { songUrl } = this.state;
 
     return (
-      <audio controls autoPlay ref="audio" id="audio">
+      <audio controls autoPlay ref="audio" id="audio" onPlay={this.report()}>
         <source src={songUrl} type="audio/mp4" />
       </audio>
     );
@@ -295,6 +295,35 @@ class App extends Component {
     fetch(`${SLS_ENDPOINT}/user/playlist`, params)
       .then(res => res.json())
       .then(res => console.log(res))
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  report() {
+    const {
+      songs,
+      selectedArtist,
+      selectedAlbum,
+      selectedSongIdx
+    } = this.state;
+    const selectedSong = songs[selectedSongIdx];
+
+    const params = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        artist: selectedArtist,
+        album: selectedAlbum,
+        song: selectedSong
+      })
+    };
+
+    fetch(`${SLS_ENDPOINT}/play`, params)
+      .then(res => res.json())
       .catch(err => {
         console.log(err);
       });
