@@ -322,7 +322,7 @@ class App extends Component {
       })
     };
 
-    fetch(`${SLS_ENDPOINT}/play`, params)
+    fetch(`${API_ADDRESS}/play`, params)
       .then(res => res.json())
       .catch(err => {
         console.log(err);
