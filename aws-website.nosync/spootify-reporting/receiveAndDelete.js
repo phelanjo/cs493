@@ -22,9 +22,6 @@ exports.handler = async event => {
         return;
       }
 
-      const message = JSON.parse(data.Messages[0].Body);
-      console.log(message);
-
       const deleteParams = {
         QueueUrl: SQS_ENDPOINT,
         ReceiptHandle: data.Messages[0].ReceiptHandle
@@ -39,4 +36,9 @@ exports.handler = async event => {
       });
     }
   });
+  const message = event.Records[0].body;
+  const parsedMessage = JSON.parse(message);
+  console.log(
+    `MESSAGE RECEIVED -- Artist: ${parsedMessage.artist} / Album: ${parsedMessage.album} / Song: ${parsedMessage.album}`
+  );
 };
