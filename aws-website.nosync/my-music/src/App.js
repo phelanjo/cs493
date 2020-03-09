@@ -323,7 +323,7 @@ class App extends Component {
     };
 
     fetch(`${API_ADDRESS}/play`, params)
-      .then(res => res.json())
+      .then(res => res.text())
       .catch(err => {
         console.log(err);
       });

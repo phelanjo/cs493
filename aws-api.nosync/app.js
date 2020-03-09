@@ -212,7 +212,7 @@ app.get('/song', (req, res) => {
 
   app.post('/play', (req, res) => {
     const artist = req.body.artist;
-    const album = req.body.artist;
+    const album = req.body.album;
     const song = req.body.song;
     const sqs = new AWS.SQS({ region: 'us-east-1' });
 
