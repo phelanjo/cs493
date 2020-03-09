@@ -39,6 +39,6 @@ exports.handler = async event => {
   const message = event.Records[0].body;
   const parsedMessage = JSON.parse(message);
   console.log(
-    `MESSAGE RECEIVED -- Artist: ${parsedMessage.artist} / Album: ${parsedMessage.album} / Song: ${parsedMessage.album}`
+    `MESSAGE RECEIVED -- Artist: ${parsedMessage.artist} / Album: ${parsedMessage.album} / Song: ${parsedMessage.song}`
   );
 };
